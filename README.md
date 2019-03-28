@@ -6,5 +6,5 @@ In the first output, emotion categories are ranked and color coded. We can tell 
 
 In the next output/graph, the polarity of the vent lines are assessed based on three categories: negative, positive, and neutral. Here, again, “positive” has the highest rate, followed by negative, and then neutral(middle white).
 
-The third output just highlights the keywords used in the vent lines based on the levels of the emotions or different sentiments themselves that are highlighted in grey; unknown, joy, anger, sadness, fear, surprise. As we can see, in the word cloud of the “joy” section, words like “good” are bigger in text showing their higher usage weight. In the “anger” section, words like “problem” and “guns” are highlights. Same is the case with other emotion levels.
+The third output just highlights the keywords used in the vent lines based on the levels of the emotions or different sentiments themselves that are highlighted in grey: unknown, joy, anger, sadness, fear, surprise. As the output reveals, in the word cloud of the “joy” section, words like “good” are bigger in text showing their higher usage weight. In the “anger” section, words like “problem” are highlighted. Same is the case with other emotion levels.
 
