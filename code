@@ -1,0 +1,57 @@
+> install_github("timjurka/sentiment/sentiment", force = TRUE)
+> library(sentiment)
+> library(ggplot2)
+
+> data <- readLines("http://www.r-bloggers.com/wp-content/uploads/2016/01/vent.txt")
+> df <- data.frame(data)
+> textdata <- df[df$data, ]
+> textdata = gsub("[[:punct:]]", "", textdata)
+> textdata = gsub("[[:punct:]]", "", textdata)
+> textdata = gsub("[[:digit:]]", "", textdata)
+> textdata = gsub("http\\w+", "", textdata)
+> textdata = gsub("[ \t]{2,}", "", textdata)
+> textdata = gsub("^\\s+|\\s+$", "", textdata)
+
+> try.error = function(x)
++ {
++    # create missing value
++    y = NA
++    # tryCatch error
++    try_error = tryCatch(tolower(x), error=function(e) e)
++    # if not an error
++    if (!inherits(try_error, "error"))
++    y = tolower(x)
++    # result
++    return(y)
++ }
+> textdata = sapply(textdata, try.error)
+> textdata = textdata[!is.na(textdata)]
+> names(textdata) = NULL
+> class_emo = classify_emotion(textdata, algorithm="bayes", prior=1.0)
+> class_emo = classify_emotion(textdata, algorithm="bayes", prior=1.0)
+> emotion = class_emo[,7]
+> emotion[is.na(emotion)] = "unknown"
+> class_pol = classify_polarity(textdata, algorithm="bayes")
+> polarity = class_pol[,4]
+> sent_df = data.frame(text=textdata, emotion=emotion, polarity=polarity, stringsAsFactors=FALSE)
+> sent_df = within(sent_df, emotion <- factor(emotion, levels=names(sort(table(emotion), decreasing=TRUE))))
+>library(ggplot2)
+> ggplot(sent_df, aes(x=emotion)) + geom_bar(aes(y=..count.., fill=emotion)) + scale_fill_brewer(palette="Dark2") + labs(x="emotion categories", y="")
+> ggplot(sent_df, aes(x=polarity)) + geom_bar(aes(y=..count.., fill=polarity)) + scale_fill_brewer(palette="RdGy") + labs(x="polarity categories", y="")
+> emos = levels(factor(sent_df$emotion))
+> nemo = length(emos)
+> emo.docs = rep("", nemo)
+> for (i in 1:nemo)
++ {
++    tmp = textdata[emotion == emos[i]]
++    emo.docs[i] = paste(tmp, collapse=" ")
++ }
+> emo.docs = removeWords(emo.docs, stopwords("english"))
+> corpus = Corpus(VectorSource(emo.docs))
+> tdm = TermDocumentMatrix(corpus)
+> tdm = as.matrix(tdm)
+> colnames(tdm) = emos
+> library(wordcloud)
+> library(RColorBrewer)
+> comparison.cloud(tdm, colors = brewer.pal(nemo, "Dark2"),
++    scale = c(3,.5), random.order = FALSE, title.size = 1.5)
